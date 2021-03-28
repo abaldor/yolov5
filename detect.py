@@ -103,6 +103,13 @@ def detect(save_img=False):
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
+                    for k in range(len(det)):
+                            x,y,w,h=int(xyxy[0]), int(xyxy[1]), int(xyxy[2] - xyxy[0]), int(xyxy[3] - xyxy[1])                   
+                            img_ = im0.astype(np.uint8)
+                            crop_img = img_[y:y+ h, x:x + w]
+                            cv2.imshow(str(p), crop_img)
+                            cv2.waitKey(1)  
+
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if opt.save_conf else (cls, *xywh)  # label format
